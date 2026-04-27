@@ -44,6 +44,7 @@ app.use("/api/admin/products", productAdminRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 
 
-app.listen(PORT, () => {
-  console.log(`Server Is Running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server Is Running on http://localhost:${PORT}`);
+// });
+module.exports = app;
