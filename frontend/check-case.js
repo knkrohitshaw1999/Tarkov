@@ -8,7 +8,7 @@ function checkFileExistsCaseSensitive(filePath) {
   const base = path.basename(filePath);
   if (!fs.existsSync(dir)) return false;
   const files = fs.readdirSync(dir);
-  return files.includes(base);
+  return files.includes(base)
 }
 
 function scanDirectory(dir) {
