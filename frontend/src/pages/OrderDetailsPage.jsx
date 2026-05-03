@@ -91,10 +91,10 @@ const OrderDetailsPage = () => {
                         {item.name} ({item.color})
                       </Link>
                     </td>
-                    <td className="py-2 px-4">${item.price.toFixed(2)}</td>
+                    <td className="py-2 px-4">₹{item.price.toFixed(2)}</td>
                     <td className="py-2 px-4">{item.quantity}</td>
                     <td className="py-2 px-4">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₹{(item.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))}

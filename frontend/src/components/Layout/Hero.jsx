@@ -1,5 +1,5 @@
 import React from "react";
-import heroImg from "../../assets/rabbit-hero.webp";
+import heroImg from "../../assets/home-hero.png";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
@@ -18,10 +18,10 @@ const Hero = () => {
             <br />
             Ready
           </h1>
-          <p className="text-sm tracking-tighter md:text-lg mb-6">
+          <p className="text-sm tracking-tighter md:text-lg mb-6 text-red-600">
             Explore the world with us. Unforgettable experiences await.
           </p>
-          <Link to="#" className="bg-white text-gray-950 px-6 py-2 rounded-sm text-lg"> Shop Now</Link>
+          <Link to="/collections/all" className="bg-white text-gray-950 px-6 py-2 rounded-sm text-lg"> Shop Now</Link>
         </div>
       </div>
     </section>

@@ -87,7 +87,7 @@ const CartContents = ({ cart, userId, guestId }) => {
 
             <div>
               <p className="font-medium">
-                ${product.price?.toLocaleString?.() || product.price}
+                ₹{product.price?.toLocaleString?.() || product.price}
               </p>
 
               <button

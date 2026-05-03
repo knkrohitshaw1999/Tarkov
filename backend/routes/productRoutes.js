@@ -205,6 +205,10 @@ router.get("/", async (req, res) => {
       query.$or = [
         { name: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+        { brand: { $regex: search, $options: "i" } },
+        { gender: { $regex: search, $options: "i" } },
+        { tags: { $in: [new RegExp(search, "i")] } },
       ];
     }
 
@@ -255,13 +259,11 @@ router.get("/best-seller", async (req, res) => {
 //@route Get /api/products/new-arrivals
 //@desc Retrive latest 8 products - creation date
 //@access Public
-    
+
 router.get("/new-arrivals", async (req, res) => {
   try {
     //Fetch latest 8 products
-    const newArrivals = await Product.find({})
-      .sort({ createdAt: -1 })
-      .limit(8);
+    const newArrivals = await Product.find({}).sort({ createdAt: -1 }).limit(8);
 
     res.json(newArrivals);
   } catch (error) {

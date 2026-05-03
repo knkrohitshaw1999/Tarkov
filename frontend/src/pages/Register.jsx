@@ -50,11 +50,11 @@ const Register = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
+    <div className="flex flex-col md:flex-row min-h-screen md:h-[calc(100vh-64px)]">
+      <div className="w-full md:w-3/5 lg:w-2/3 flex flex-col justify-center items-center md:items-end p-8 md:p-12 lg:pr-32">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm"
+          className="w-full max-w-lg bg-white p-8 md:p-10 rounded-lg border shadow-sm"
         >
           <h2 className="text-xl font-bold text-center mb-4">TARKOV</h2>
 
@@ -77,7 +77,7 @@ const Register = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="Enter your name"
             />
           </div>
@@ -90,7 +90,7 @@ const Register = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="Enter your email address"
             />
           </div>
@@ -101,7 +101,7 @@ const Register = () => {
             </label>
             <input
               type="password"
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
@@ -111,7 +111,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition"
+            className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition"
           >
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
@@ -128,7 +128,7 @@ const Register = () => {
         </form>
       </div>
 
-      <div className="hidden md:block w-1/2 bg-gray-800">
+      <div className="hidden md:block w-2/5 lg:w-1/3 bg-gray-800">
         <img
           src={registerImg}
           alt="Register"

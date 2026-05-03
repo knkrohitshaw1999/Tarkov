@@ -34,7 +34,7 @@ const App = () => {
             <Route
               path="/profile"
               element={
-                <ProtectRoute role="user">
+                <ProtectRoute>
                   <Profile />
                 </ProtectRoute>
               }
@@ -54,19 +54,14 @@ const App = () => {
           </Route>
 
           {/* Admin layout */}
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectRoute role="admin">
-                <AdminLayout />
-              </ProtectRoute>
-            }
-          >
-            <Route index element={<AdminHomePage />} />
-            <Route path="users" element={<UserManagement />} />
-            <Route path="products" element={<ProductManagement />} />
-            <Route path="products/:id/edit" element={<EditProductPage />} />
-            <Route path="orders" element={<OrderManagement />} />
+          <Route element={<ProtectRoute role="admin" />}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminHomePage />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="products" element={<ProductManagement />} />
+              <Route path="products/:id/edit" element={<EditProductPage />} />
+              <Route path="orders" element={<OrderManagement />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

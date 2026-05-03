@@ -129,28 +129,50 @@ const ProductsDetails = ({ productId }) => {
               </h1>
               <p className="text-lg text-gray-600 mb-1 line-through">
                 {selectedProduct.originalPrice &&
-                  `${selectedProduct.originalPrice} $`}
+                  `${selectedProduct.originalPrice} ₹`}
               </p>
               <p className="text-xl text-gray-500 mb-2">
-                ${selectedProduct.price}
+                ₹{selectedProduct.price}
               </p>
               <p className="text-gray-600 mb-4">
                 {selectedProduct.description}
               </p>
               <div className="mb-4">
-                <p className="text-gray-700">Color:</p>
+                <p className="text-gray-700">
+                  Color: {selectedColor && <span className="font-semibold">{selectedColor}</span>}
+                </p>
                 <div className="flex gap-2 mt-2">
-                  {selectedProduct.colors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`w-8 h-8 rounded-full border ${selectedColor === color ? "border-4 border-black" : "border-gray-300"}`}
-                      style={{
-                        backgroundColor: color.toLocaleLowerCase(),
-                        filter: "brightness(0.5)",
-                      }}
-                    ></button>
-                  ))}
+                  {selectedProduct.colors.map((color) => {
+                    const colorHexMap = {
+                      "navy palms": "#000080",
+                      "tropical print": "#556b2f",
+                      "dark wash": "#0f4d92",
+                      "heather gray": "#9e9e9e",
+                      "charcoal": "#36454f",
+                      "olive": "#808000",
+                      "dark green": "#006400",
+                      "burgundy": "#800020",
+                      "beige": "#f5f5dc",
+                      "navy blue": "#000080",
+                      "navy": "#000080",
+                      "white": "#ffffff",
+                      "black": "#000000",
+                    };
+                    const lowerColor = color.toLowerCase();
+                    const validColor = colorHexMap[lowerColor] || lowerColor.replace(/\s+/g, "");
+
+                    return (
+                      <button
+                        key={color}
+                        onClick={() => setSelectedColor(color)}
+                        title={color}
+                        className={`w-8 h-8 rounded-full border ${selectedColor === color ? "border-4 border-black" : "border-gray-300"}`}
+                        style={{
+                          backgroundColor: validColor,
+                        }}
+                      ></button>
+                    );
+                  })}
                 </div>
               </div>
 

@@ -41,11 +41,11 @@ const Login = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
+    <div className="flex flex-col md:flex-row min-h-screen md:h-[calc(100vh-64px)]">
+      <div className="w-full md:w-3/5 lg:w-2/3 flex flex-col justify-center items-center md:items-end p-8 md:p-12 lg:pr-32">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm"
+          className="w-full max-w-lg bg-white p-8 md:p-10 rounded-lg border shadow-sm"
         >
           <div className="flex justify-center mb-6">
             <h2 className="text-xl font-bold">TARKOV</h2>
@@ -58,7 +58,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="Enter your email address"
             />
           </div>
@@ -66,7 +66,7 @@ const Login = () => {
             <label className="block text-sm font-semibold mb-2">Password</label>
             <input
               type="password"
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
@@ -74,23 +74,23 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-black text-white p-2 rounded-lg 
+            className="w-full bg-black text-white p-3 rounded-lg 
             font-semibold hover:bg-gray-800 transition"
           >
-            {loading ? "Loading..." :"Sign In"}
+            {loading ? "Loading..." :"Log In"}
           </button>
           <p className="mt-6 text-center text-sm">
-            Dont Have An Account? {""}
+            Don't Have An Account? {""}
             <Link
           to={`/register?redirect=${encodeURIComponent(redirect)}`}
               className="text-blue-500 hover:underline"
             >
-              Register
+              Sign up
             </Link>
           </p>
         </form>
       </div>
-      <div className="hidden md:block w-1/2 bg-gray-800">
+      <div className="hidden md:block w-2/5 lg:w-1/3 bg-gray-800">
         <div className="h-full  flex flex-col justify-center items-center">
           <img
             src={login}

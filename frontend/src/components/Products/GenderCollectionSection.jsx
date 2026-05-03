@@ -30,7 +30,7 @@ const GenderCollectionSection = () => {
           <img
             src={menCollectionImage}
             alt="Men's Collection"
-            className="w-full h-[700px] object-cover"
+            className="w-full h-[700px] object-cover object-top"
           />
           <div className="absolute bottom-8 left-8 bg-white bg-opacity-90 p-4">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">

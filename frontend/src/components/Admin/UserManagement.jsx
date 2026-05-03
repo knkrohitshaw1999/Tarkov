@@ -28,7 +28,7 @@ const UserManagement = () => {
     }
   }, [user, navigate, dispatch]);
   useEffect(() => {
-    if (user && user.role !== "admin") {
+    if (user && user.role === "admin") {
       dispatch(fetchUsers());
     }
   }, [dispatch, user]);
@@ -158,30 +158,36 @@ const UserManagement = () => {
           </thead>
           <tbody>
             {users &&
-              users.map((u) => (
-                <tr key={u._id} className="border-b hover:bg-gray-50">
-                  <td className="p-4 font-medium text-gray-900">{u.name}</td>
-                  <td className="p-4">{u.email}</td>
-                  <td className="p-4">
-                    <select
-                      value={u.role}
-                      onChange={(e) => handleRoleChange(u._id, e.target.value)}
-                      className="p-1 border rounded bg-white"
-                    >
-                      <option value="customer">Customer</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </td>
-                  <td className="p-4 text-center">
-                    <button
-                      onClick={() => handleDeleteUser(u._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              users
+                .filter((u) => u && u._id) // ✅ remove bad data
+                .map((u) => (
+                  <tr key={u._id} className="border-b hover:bg-gray-50">
+                    <td className="p-4 font-medium text-gray-900">
+                      {u.name || "No Name"} {/* ✅ safe */}
+                    </td>
+                    <td className="p-4">{u.email || "No Email"}</td>
+                    <td className="p-4">
+                      <select
+                        value={u.role}
+                        onChange={(e) =>
+                          handleRoleChange(u._id, e.target.value)
+                        }
+                        className="p-1 border rounded bg-white"
+                      >
+                        <option value="customer">Customer</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </td>
+                    <td className="p-4 text-center">
+                      <button
+                        onClick={() => handleDeleteUser(u._id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>

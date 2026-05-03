@@ -1,63 +1,72 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { HiMagnifyingGlass, HiMiniXMark } from "react-icons/hi2";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setFilters } from "../../redux/slices/productsSlice";
-import { fetchProductsByFilters } from "../../redux/slices/productsSlice";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch, useNavigation = true }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setOpen] = useState(false);
+
   const handleSearchToggle = () => {
     setOpen(!isOpen);
   };
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const handelSearch = (e) => {
+
+  const handleSearch = (e) => {
     e.preventDefault();
-    // console.log("Searching for:", searchTerm);
-    dispatch(setFilters({ search: searchTerm }));
-    dispatch(fetchProductsByFilters({ search: searchTerm }));
-    navigate(`/collections/all?search=${searchTerm}`);
+
+    if (onSearch) {
+      onSearch(searchTerm);
+    }
+
+    if (useNavigation) {
+      window.location.href = `/collections/all?search=${searchTerm}`;
+    }
+
     setOpen(false);
   };
+
   return (
     <div
-      className={`flex items-center justify-center w-full transition-all duration-300 ${isOpen ? "absolute top-0 left-0 w-full bg-white h-24 z-50" : "w-auto"}`}
+      className={`flex items-center justify-end transition-all duration-300 ${
+        isOpen ? "w-full" : "w-auto"
+      }`}
     >
       {isOpen ? (
         <form
-          onSubmit={handelSearch}
-          className="relative flex items-center justify-center w-full"
+          onSubmit={handleSearch}
+          className="flex items-center gap-2"
         >
-          <div className="relative w-1/2">
+          {/* Input + Icon */}
+          <div className="relative">
             <input
               type="text"
               placeholder="Search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-gray-100 px-4 py-2 pl-2 pr-12 rounded-lg focus:outline-none w-full placeholder:text-gray-700"
+              className="bg-gray-100 px-4 py-2 pr-10 rounded-lg w-64 outline-none focus:ring-2 focus:ring-gray-400"
             />
+
             <button
               type="submit"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black"
             >
-              <HiMagnifyingGlass className="h-6 w-6" />
+              <HiMagnifyingGlass className="h-5 w-5" />
             </button>
           </div>
-          {/* close button */}
+
+          {/* Close button */}
           <button
             type="button"
             onClick={handleSearchToggle}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+            className="text-gray-600 hover:text-black"
           >
-            <HiMiniXMark className="h-6 w-6" />
+            <HiMiniXMark className="h-5 w-5" />
           </button>
         </form>
       ) : (
-        <button onClick={handleSearchToggle}>
-          <HiMagnifyingGlass className="h-6 w-6" />
+        <button
+          onClick={handleSearchToggle}
+          className="p-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+        >
+          <HiMagnifyingGlass className="h-5 w-5" />
         </button>
       )}
     </div>
