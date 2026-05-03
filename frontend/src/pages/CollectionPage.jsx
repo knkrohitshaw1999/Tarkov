@@ -11,40 +11,32 @@ const CollectionPage = () => {
   const { collection } = useParams();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-
-  const { products, loading, error } = useSelector(
-    (state) => state.products
-  );
-
+  const { products, loading, error } = useSelector((state) => state.products);
+  const queryParams = Object.fromEntries([...searchParams]);
   const sidebarRef = useRef(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // ✅ FETCH PRODUCTS + DEBUG BACKEND URL
-  useEffect(() => {
-    const queryParams = Object.fromEntries([...searchParams]);
+useEffect(() => {
+  const queryParams = Object.fromEntries([...searchParams]);
 
-    const API = import.meta.env.VITE_BACKEND_URL;
+  dispatch(fetchProductsByFilters({ collection, ...queryParams }));
+}, [dispatch, collection, searchParams.toString()]);
 
-    // 🔥 DEBUG LINE (IMPORTANT)
-    console.log("BACKEND URL:", API);
-
-    dispatch(fetchProductsByFilters({ collection, ...queryParams }));
-  }, [dispatch, collection, searchParams.toString()]);
-
-  // Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
+      // close sidebar if clicked outside
       if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
         setIsSidebarOpen(false);
       }
     };
 
+    // Add event listener
     document.addEventListener("mousedown", handleClickOutside);
 
+    // Cleanup function
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -52,37 +44,29 @@ const CollectionPage = () => {
 
   return (
     <div className="flex flex-col lg:flex-row">
-      {/* Mobile Filters Button */}
+      {/* Mobile Fileters */}
       <button
         onClick={toggleSidebar}
         className="lg:hidden border p-2 flex justify-center items-center"
       >
-        <FaFilter className="mr-2 text-gray-700" />
+        <FaFilter className=" mr-2 text-gray-700" />
       </button>
-
-      {/* Sidebar */}
+      {/* Filter SideBAr */}
       <div
         ref={sidebarRef}
-        className={`${
+        className={` ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed inset-y-0 z-50 left-0 w-64 bg-white overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0`}
+        } fixed inset-y-0 z-50 left-0 w-64 bg-white overflow-y-auto transition-transform
+       duration-300 lg:static lg:translate-x-0`}
       >
         <FilterSidebar />
       </div>
-
-      {/* Main Content */}
       <div className="flex-grow p-4">
-        <h2 className="text-2xl uppercase mb-4">All Collections</h2>
-
-        {/* Sort */}
+        <h2 className="text-2xl uppercase mb-4"> All Collections</h2>
+        {/* Sort Options */}
         <SortOptions />
-
-        {/* Products */}
-        <ProductGrid
-          products={products}
-          loading={loading}
-          error={error}
-        />
+        {/* Products Grid */}
+        <ProductGrid products={products} loading={loading} error={error} />
       </div>
     </div>
   );
