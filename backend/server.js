@@ -1,9 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-
 const connectDB = require("./config/db");
-
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
@@ -15,34 +13,20 @@ const adminRoutes = require("./routes/adminRoutes");
 const productAdminRoutes = require("./routes/productAdminRoutes");
 const adminOrderRoutes = require("./routes/adminOrderRoutes");
 const paypalRoutes = require("./routes/paypalRoutes");
-
 dotenv.config();
-
 const app = express();
-
-// ✅ CORS FIX
-app.use(
-  cors({
-    origin: "https://tarkov-frontend.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-app.options("*", cors());
-
-// Middleware
 app.use(express.json());
+app.use(cors());
 
-// Connect DB
+const PORT = process.env.PORT || 3000;
+
+// Connect To MongoDB
 connectDB();
-
-// Test route
 app.get("/", (req, res) => {
   res.send("Welcome To Tarkov Api !");
 });
 
-// API Routes
+//Api Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
@@ -52,16 +36,15 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/subscribe", subscribeRoute);
 app.use("/api/paypal", paypalRoutes);
 
-// Admin Routes
+
+
+//Admin Routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/products", productAdminRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 
-// Start server
-const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server Is Running on http://localhost:${PORT}`);
 });
-
 module.exports = app;
