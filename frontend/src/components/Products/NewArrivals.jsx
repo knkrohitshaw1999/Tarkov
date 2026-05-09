@@ -20,7 +20,6 @@ const NewArrivals = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`,
         );
-        setNewArrivals(response.data);
         setNewArrivals(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error(error);
@@ -44,7 +43,7 @@ const NewArrivals = () => {
   };
 
   const handleMouseUpOrLeave = () => {
-    setIsDragging(0);
+    setIsDragging(false);
   };
 
   const scroll = (direction) => {

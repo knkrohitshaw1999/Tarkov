@@ -65,7 +65,7 @@ const Home = () => {
       )}
 
       {/* Women Products */}
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <h2 className="text-3xl text-center font-bold mb-4">
           Top Wears For Women
         </h2>

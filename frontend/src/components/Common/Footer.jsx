@@ -8,7 +8,7 @@ import { FiPhoneCall } from "react-icons/fi";
 const Footer = () => {
   return (
     <footer className="border-t py-12">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4 lg:px-0">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4 md:px-8 lg:px-12">
         <div>
           <h3 className="text-lg text-gray-800 mb-4">News Letter</h3>
           <p className="text-gray-500 mb-4">
@@ -131,7 +131,7 @@ const Footer = () => {
         </div>
       </div>
       {/* Footer Bottom */}
-      <div className="container mx-auto mt-12 px-4 lg:px-0 border-t border-gray-200 pt-6">
+      <div className="container mx-auto mt-12 px-4 md:px-8 lg:px-12 border-t border-gray-200 pt-6">
         <p className="text-sm tracking-tighter text-center text-gray-500">© 2024 Tarkov. All rights reserved.</p>
       </div>
     </footer>

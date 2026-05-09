@@ -12,7 +12,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, guestId, loading } = useSelector((state) => state.auth);
+  const { user, guestId, loading, error } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
 
   //get redirect parameter and check if it is checkout or something
@@ -22,15 +22,20 @@ const Login = () => {
   useEffect(() => {
     if (!user) return;
 
+    const targetPath = isCheckoutRedirect ? "/checkout" : "/";
+
     if (guestId && cart?.products?.length > 0) {
       dispatch(mergeCart({ guestId, user }))
         .unwrap()
         .then(() => {
-          navigate(isCheckoutRedirect ? "/checkout" : "/");
+          navigate(targetPath);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          navigate(targetPath); // Navigate even if merge fails
+        });
     } else {
-      navigate(isCheckoutRedirect ? "/checkout" : "/");
+      navigate(targetPath);
     }
   }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch]);
 
@@ -51,7 +56,12 @@ const Login = () => {
             <h2 className="text-xl font-bold">TARKOV</h2>
           </div>
           <h2 className="text-2xl font-bold text-center mb-6">WELCOME </h2>
-          <p className="text-center mb-6">Enter Your Username And Pawsword</p>
+          <p className="text-center mb-6">Enter Your Username And Password</p>
+          {error && (
+            <p className="bg-red-100 text-red-700 p-3 rounded-lg text-center text-sm mb-4">
+              {error}
+            </p>
+          )}
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">Email</label>
             <input

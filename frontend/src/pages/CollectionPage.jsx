@@ -12,7 +12,7 @@ const CollectionPage = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.products);
-  const queryParams = Object.fromEntries([...searchParams]);
+
   const sidebarRef = useRef(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
@@ -23,7 +23,7 @@ useEffect(() => {
   const queryParams = Object.fromEntries([...searchParams]);
 
   dispatch(fetchProductsByFilters({ collection, ...queryParams }));
-}, [dispatch, collection, searchParams.toString()]);
+}, [dispatch, collection, searchParams]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -62,7 +62,7 @@ useEffect(() => {
         <FilterSidebar />
       </div>
       <div className="flex-grow p-4">
-        <h2 className="text-2xl uppercase mb-4"> All Collections</h2>
+        {/* <h2 className="text-2xl uppercase mb-4"> All Collections</h2> */}
         {/* Sort Options */}
         <SortOptions />
         {/* Products Grid */}

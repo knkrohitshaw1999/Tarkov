@@ -11,6 +11,7 @@ const Checkout = () => {
   const { cart, loading, error } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const [checkoutId, setCheckoutId] = useState(null);
+  const [phoneError, setPhoneError] = useState("");
   const [shippingAddress, setShippingAddress] = useState({
     firstName: "",
     lastName: "",
@@ -20,6 +21,10 @@ const Checkout = () => {
     country: "",
     phone: "",
   });
+
+  // Auto-capitalize first letter
+  const capitalize = (str) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
   //Ensure cart is loaded before processing
   useEffect(() => {
     if (!cart || !cart.products || cart.products.length === 0) {
@@ -29,6 +34,14 @@ const Checkout = () => {
 
   const handleCreateCheckout = async (e) => {
     e.preventDefault();
+
+    // Phone validation
+    const digitsOnly = shippingAddress.phone.replace(/\D/g, "");
+    if (digitsOnly.length < 10) {
+      setPhoneError("Enter a valid mobile number");
+      return;
+    }
+    setPhoneError("");
 
     if (cart && cart.products.length > 0) {
       const res = await dispatch(
@@ -45,7 +58,6 @@ const Checkout = () => {
       }
     }
 
-    // Logic for creating checkout
   };
   const handlePaymentSuccess = async (details) => {
     try {
@@ -61,9 +73,9 @@ const Checkout = () => {
           },
         },
       );
-      await handleFinalizeCheckout(checkoutId); //Finalize CheckOut id if payment is seccessful
-    } catch (error) {
-      console.error(error);
+      await handleFinalizeCheckout(checkoutId); //Finalize CheckOut id if payment is successful
+    } catch (err) {
+      console.error(err);
     }
   };
   const handleFinalizeCheckout = async (checkoutId) => {
@@ -78,8 +90,8 @@ const Checkout = () => {
         },
       );
       navigate("/order-confirmation");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
   if (loading) return <p>Loading Cart ... </p>;
@@ -106,7 +118,7 @@ const Checkout = () => {
             />
           </div>
           <h3 className="text-lg mb-4"> Delivery</h3>
-          <div className="mb-4 grid grid-cols-2 gap-4">
+          <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700">First Name</label>
               <input
@@ -115,7 +127,7 @@ const Checkout = () => {
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
-                    firstName: e.target.value,
+                    firstName: capitalize(e.target.value),
                   })
                 }
                 className="w-full p-2 border rounded"
@@ -130,7 +142,7 @@ const Checkout = () => {
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
-                    lastName: e.target.value,
+                    lastName: capitalize(e.target.value),
                   })
                 }
                 className="w-full p-2 border rounded"
@@ -153,7 +165,7 @@ const Checkout = () => {
               required
             />
           </div>
-          <div className="mb-4 grid grid-cols-2 gap-4">
+          <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700">City</label>
               <input
@@ -162,7 +174,7 @@ const Checkout = () => {
                 onChange={(e) =>
                   setShippingAddress({
                     ...shippingAddress,
-                    city: e.target.value,
+                    city: capitalize(e.target.value),
                   })
                 }
                 className="w-full p-2 border rounded"
@@ -187,8 +199,7 @@ const Checkout = () => {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Country</label>
-            <input
-              type="text"
+            <select
               value={shippingAddress.country}
               onChange={(e) =>
                 setShippingAddress({
@@ -198,22 +209,76 @@ const Checkout = () => {
               }
               className="w-full p-2 border rounded"
               required
-            />
+            >
+              <option value="">Select a Country</option>
+              {[
+                "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
+                "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+                "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados",
+                "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+                "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei",
+                "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+                "Cameroon", "Canada", "Central African Republic", "Chad", "Chile",
+                "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica",
+                "Croatia", "Cuba", "Cyprus", "Czech Republic", "Democratic Republic of the Congo",
+                "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
+                "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia",
+                "Eswatini", "Ethiopia", "Fiji", "Finland", "France",
+                "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+                "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
+                "Guyana", "Haiti", "Honduras", "Hungary", "Iceland",
+                "India", "Indonesia", "Iran", "Iraq", "Ireland",
+                "Israel", "Italy", "Ivory Coast", "Jamaica", "Japan",
+                "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait",
+                "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho",
+                "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+                "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
+                "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico",
+                "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro",
+                "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru",
+                "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger",
+                "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman",
+                "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea",
+                "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+                "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis",
+                "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
+                "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone",
+                "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
+                "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka",
+                "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+                "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste",
+                "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
+                "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates",
+                "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
+                "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia",
+                "Zimbabwe"
+              ].map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Phone Number</label>
             <input
               type="tel"
               value={shippingAddress.phone}
-              onChange={(e) =>
+              onChange={(e) => {
                 setShippingAddress({
                   ...shippingAddress,
                   phone: e.target.value,
-                })
-              }
-              className="w-full p-2 border rounded"
+                });
+                if (phoneError) setPhoneError("");
+              }}
+              className={`w-full p-2 border rounded ${
+                phoneError ? "border-red-500" : ""
+              }`}
               required
             />
+            {phoneError && (
+              <p className="text-red-600 text-sm mt-1">{phoneError}</p>
+            )}
           </div>
           <div className="mt-6">
             {!checkoutId ? (

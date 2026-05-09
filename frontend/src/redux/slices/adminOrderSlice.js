@@ -97,7 +97,6 @@ const adminOrderSlice = createSlice({
       // Update order
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         const updatedOrder = action.payload;
-        console.log(action.payload);
         
         const index = state.orders.findIndex(
           (order) => order._id === updatedOrder._id

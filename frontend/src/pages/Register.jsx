@@ -26,15 +26,20 @@ const Register = () => {
   useEffect(() => {
     if (!user) return;
 
+    const targetPath = isCheckoutRedirect ? "/checkout" : "/";
+
     if (guestId && cart?.products?.length > 0) {
       dispatch(mergeCart({ guestId, user }))
         .unwrap()
         .then(() => {
-          navigate(isCheckoutRedirect ? "/checkout" : "/");
+          navigate(targetPath);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          navigate(targetPath);
+        });
     } else {
-      navigate(isCheckoutRedirect ? "/checkout" : "/");
+      navigate(targetPath);
     }
   }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch]);
 

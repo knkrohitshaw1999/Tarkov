@@ -15,9 +15,8 @@ const OrderConfirmationPage = () => {
     if (checkout && checkout._id) {
       dispatch(clearCart());
       localStorage.removeItem("cart");
-    navigate(`/order-confirmation`);
     }
-  }, [checkout, dispatch, navigate]);
+  }, [checkout, dispatch]);
 
   const calculatedEstimatedDelivery = (createdAt) => {
     const orderDate = new Date(createdAt);
@@ -33,7 +32,7 @@ const OrderConfirmationPage = () => {
 
       {checkout && (
         <div className="p-6 rounded-lg border">
-          <div className="flex justify-between mb-20">
+          <div className="flex flex-col sm:flex-row justify-between mb-20 gap-4">
             <div>
               <h2 className="text-xl font-semibold">
                 Order ID: {checkout._id}
@@ -78,7 +77,7 @@ const OrderConfirmationPage = () => {
           </div>
 
           {/* Payment & Delivery */}
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div>
               <h4 className="text-lg font-semibold mb-2">Payment</h4>
               <p className="text-gray-600">PayPal</p>

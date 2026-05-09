@@ -58,10 +58,10 @@ router.post("/login", async (req, res) => {
   try {
     //Find USer By Email
     let user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid Credentials" });
+    if (!user) return res.status(400).json({ message: "You have entered a wrong email" });
     const isMatch = await user.matchPassword(password);
     if (!isMatch)
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res.status(400).json({ message: "You are entering a wrong password" });
 
 
     // JWT Payload....................

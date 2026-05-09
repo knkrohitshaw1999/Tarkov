@@ -199,7 +199,8 @@ router.post("/merge", protect, async (req, res) => {
     const userCart = await Cart.findOne({ user: userId });
 
     if (!guestCart || guestCart.products.length === 0) {
-      return res.status(404).json({ message: "Guest cart empty or not found" });
+      // No guest cart to merge — not an error, just return the user's existing cart or an empty one
+      return res.status(200).json(userCart || { products: [], totalPrice: 0 });
     }
 
     if (userCart) {
