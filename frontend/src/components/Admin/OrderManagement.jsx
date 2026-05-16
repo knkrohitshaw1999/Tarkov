@@ -24,11 +24,11 @@ const OrderManagement = () => {
   if (loading) return <p> Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   return (
-    <div className="max-w-7xl max-auto p-6">
+    <div className="max-w-7xl mx-auto p-4 md:p-6">
       <h2 className="text-2xl font-bold mb-6">Order Management</h2>
       <div className="overflow-x-auto shadow-md sm:rounded-lg">
         <table className="min-w-full text-left text-gray-500">
-          <thead className="bg-gray-100 text-xl uppercase text-gray-700">
+          <thead className="bg-gray-100 text-xs md:text-xl uppercase text-gray-700">
             <tr>
               <th className="py-3 px-4"> Order Id </th>
               <th className="py-3 px-4">Customer</th>
@@ -44,19 +44,19 @@ const OrderManagement = () => {
                   key={order._id}
                   className="border-b hover:bg-gray-50 cursor-pointer"
                 >
-                  <td className="py-4 px-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="py-2 md:py-4 px-2 md:px-4 font-medium text-gray-900 whitespace-nowrap text-xs md:text-base">
                     #{order._id}
                   </td>
-                  <td className="p-4">{order.user?.name || "Unknown"}</td>
-                  <td className="p-4">₹{order.totalPrice.toFixed(2)}</td>
+                  <td className="p-2 md:p-4 text-xs md:text-base">{order.user?.name || "Unknown"}</td>
+                  <td className="p-2 md:p-4 text-xs md:text-base">₹{order.totalPrice.toFixed(2)}</td>
 
-                  <td className="p-4">
+                  <td className="p-2 md:p-4">
                     <select
                       value={order.status}
                       onChange={(e) =>
                         handleStatusChange(order._id, e.target.value)
                       }
-                      className="bg-gray-50 border border-gray-30 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 block p-1 md:p-2.5"
                     >
                       <option value="Processing">Processing </option>
                       <option value="Shipped">Shipped </option>
@@ -64,10 +64,10 @@ const OrderManagement = () => {
                       <option value="Cancelled">Cancelled </option>
                     </select>
                   </td>
-                  <td className="p-4">
+                  <td className="p-2 md:p-4">
                     <button
                       onClick={() => handleStatusChange(order._id, "Delivered")}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                      className="bg-green-500 text-white px-2 md:px-4 py-1 md:py-2 rounded hover:bg-green-600 text-xs md:text-base"
                     >
                       Mark as Delivered
                     </button>

@@ -69,20 +69,20 @@ const OrderDetailsPage = () => {
             <table className="min-w-full text-gray-600 mb-4">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-2 px-4">Name</th>
-                  <th className="py-2 px-4">Unit Price</th>
-                  <th className="py-2 px-4">Quantity</th>
-                  <th className="py-2 px-4">Total</th>
+                  <th className="py-2 px-2 md:px-4 text-left text-xs md:text-base">Name</th>
+                  <th className="py-2 px-2 md:px-4 text-left text-xs md:text-base">Unit Price</th>
+                  <th className="py-2 px-2 md:px-4 text-left text-xs md:text-base">Quantity</th>
+                  <th className="py-2 px-2 md:px-4 text-left text-xs md:text-base">Total</th>
                 </tr>
               </thead>
               <tbody>
                 {orderDetails.orderItems.map((item) => (
-                  <tr key={item.productId} className="border-b">
-                    <td className="py-2 px-4 flex items-center">
+                  <tr key={item.productId} className="border-b text-xs md:text-base">
+                    <td className="py-2 px-2 md:px-4 flex items-center">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-12 h-12 object-cover mr-4 rounded-lg"
+                        className="w-8 h-8 md:w-12 md:h-12 object-cover mr-2 md:mr-4 rounded-lg"
                       />
                       <Link
                         to={`/product/${item.productId}`}
@@ -91,9 +91,9 @@ const OrderDetailsPage = () => {
                         {item.name} ({item.color})
                       </Link>
                     </td>
-                    <td className="py-2 px-4">₹{item.price.toFixed(2)}</td>
-                    <td className="py-2 px-4">{item.quantity}</td>
-                    <td className="py-2 px-4">
+                    <td className="py-2 px-2 md:px-4">₹{item.price.toFixed(2)}</td>
+                    <td className="py-2 px-2 md:px-4">{item.quantity}</td>
+                    <td className="py-2 px-2 md:px-4">
                       ₹{(item.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>

@@ -62,13 +62,13 @@ const ProductManagement = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-4 md:p-6">
       
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <h2 className="text-2xl font-bold">Product Management</h2>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
           
           {/* 🔍 Search */}
           <SearchBar
@@ -112,17 +112,17 @@ const ProductManagement = () => {
                   key={product._id}
                   className="border-b hover:bg-gray-50 transition"
                 >
-                  <td className="p-4 text-gray-500">{index + 1}</td>
+                  <td className="p-2 md:p-4 text-gray-500">{index + 1}</td>
 
-                  <td className="p-4 font-medium text-gray-900">
+                  <td className="p-2 md:p-4 font-medium text-gray-900">
                     {product.name}
                   </td>
 
-                  <td className="p-4">₹{product.price}</td>
+                  <td className="p-2 md:p-4">₹{product.price}</td>
 
-                  <td className="p-4">{product.sku}</td>
+                  <td className="p-2 md:p-4">{product.sku}</td>
 
-                  <td className="p-4 flex justify-center gap-2">
+                  <td className="p-2 md:p-4 flex justify-center gap-2">
                     <Button
                       variant="warning"
                       size="sm"

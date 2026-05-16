@@ -64,14 +64,14 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-4 md:p-6">
       <h2 className="text-2xl font-bold mb-4">User Management</h2>
 
       {loading && <p className="text-blue-500">Loading users...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
 
       {/* Admin New User Form */}
-      <div className="p-6 bg-gray-50 rounded-lg mb-6 border">
+      <div className="p-4 md:p-6 bg-gray-50 rounded-lg mb-6 border">
         <h3 className="text-lg font-bold mb-4">Add New User</h3>
         <form
           onSubmit={handleSubmit}
@@ -162,26 +162,26 @@ const UserManagement = () => {
                 .filter((u) => u && u._id) // ✅ remove bad data
                 .map((u) => (
                   <tr key={u._id} className="border-b hover:bg-gray-50">
-                    <td className="p-4 font-medium text-gray-900">
+                    <td className="p-2 md:p-4 font-medium text-gray-900">
                       {u.name || "No Name"} {/* ✅ safe */}
                     </td>
-                    <td className="p-4">{u.email || "No Email"}</td>
-                    <td className="p-4">
+                    <td className="p-2 md:p-4">{u.email || "No Email"}</td>
+                    <td className="p-2 md:p-4">
                       <select
                         value={u.role}
                         onChange={(e) =>
                           handleRoleChange(u._id, e.target.value)
                         }
-                        className="p-1 border rounded bg-white"
+                        className="p-1 border rounded bg-white text-sm"
                       >
                         <option value="customer">Customer</option>
                         <option value="admin">Admin</option>
                       </select>
                     </td>
-                    <td className="p-4 text-center">
+                    <td className="p-2 md:p-4 text-center">
                       <button
                         onClick={() => handleDeleteUser(u._id)}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                        className="bg-red-500 text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-red-600 transition text-sm"
                       >
                         Delete
                       </button>

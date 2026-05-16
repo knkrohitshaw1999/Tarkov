@@ -24,13 +24,13 @@ const MyOrderPage = () => {
         <table className="min-w-full text-left text-gray-500">
           <thead className="bg-gray-100 text-xs uppercase text-gray-700">
             <tr>
-              <th className="py-2 px-4 sm:py-3">Image</th>
-              <th className="py-2 px-4 sm:py-3">Order ID</th>
-              <th className="py-2 px-4 sm:py-3">Created </th>
-              <th className="py-2 px-4 sm:py-3">Shipping Address </th>
-              <th className="py-2 px-4 sm:py-3"> Items</th>
-              <th className="py-2 px-4 sm:py-3">Price</th>
-              <th className="py-2 px-4 sm:py-3"> Status</th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4">Image</th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4">Order ID</th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4">Created </th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4">Shipping Address </th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4"> Items</th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4">Price</th>
+              <th className="py-2 px-2 sm:py-3 sm:px-4"> Status</th>
             </tr>
           </thead>
           <tbody>
@@ -49,36 +49,35 @@ const MyOrderPage = () => {
                     />
                   </td>
 
-                  <td className="py-2 px-2 sm:py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="py-2 px-2 sm:py-4 sm:px-4 font-medium text-gray-900 whitespace-nowrap text-xs sm:text-sm">
                     #{order._id}
                   </td>
 
-                  <td className="py-2 px-2 sm:py-4 sm:px-4">
+                  <td className="py-2 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm">
                     {new Date(order.createdAt).toLocaleDateString("en-US")}{" "}
                     {new Date(order.createdAt).toLocaleTimeString()}
                   </td>
 
-                  <td className="py-2 px-2 sm:py-4 sm:px-4">
+                  <td className="py-2 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm">
                     {order.shippingAddress
                       ? `${order.shippingAddress.address || order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.country}`
                       : "N/A"}
                   </td>
 
-                  <td className="py-2 px-2 sm:py-4 sm:px-4">
+                  <td className="py-2 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm">
                     {order.orderItems.length}
                   </td>
 
-                  <td className="py-2 px-2 sm:py-4 sm:px-4">
-                    ₹{order.totalPrice}
+                  <td className="py-2 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm">
+                    ₹{Math.floor(order.totalPrice)}
                   </td>
 
-                  <td className="py-2 px-2 sm:py-4 sm:px-4">
+                  <td className="py-2 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        order.isPaid
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${order.isPaid
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"
-                      }`}
+                        }`}
                     >
                       {order.isPaid ? "Paid" : "Pending"}
                     </span>

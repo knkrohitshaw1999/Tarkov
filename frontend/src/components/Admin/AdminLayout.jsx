@@ -32,7 +32,7 @@ const AdminLayout = () => {
         <AdminSidebar/>
        </div>
        {/* Main Content Area */}
-       <div className="flex-grow p-6 overflow-auto">
+       <div className="flex-grow p-4 md:p-6 overflow-auto">
         <Outlet/>
        </div>
     </div>
