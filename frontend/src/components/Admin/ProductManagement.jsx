@@ -18,6 +18,7 @@ const ProductManagement = () => {
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGender, setSelectedGender] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   // Fetch products
@@ -36,17 +37,22 @@ const ProductManagement = () => {
       );
     }
 
+    // 📂 Gender filter
+    if (selectedGender !== "all") {
+      filtered = filtered.filter(
+        (product) => product.gender?.toLowerCase() === selectedGender
+      );
+    }
+
     // 📂 Category filter
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (product) =>
-          product.category?.toLowerCase() === selectedCategory ||
-          product.gender?.toLowerCase() === selectedCategory
+        (product) => product.category?.toLowerCase() === selectedCategory
       );
     }
 
     setFilteredProducts(filtered);
-  }, [products, searchQuery, selectedCategory]);
+  }, [products, searchQuery, selectedGender, selectedCategory]);
 
   // Delete handler
   const handleDelete = (id) => {
@@ -76,15 +82,24 @@ const ProductManagement = () => {
             onSearch={(query) => setSearchQuery(query)}
           />
 
+          {/* 📂 Gender Dropdown */}
+          <select
+            value={selectedGender}
+            onChange={(e) => setSelectedGender(e.target.value)}
+            className="border px-3 py-2 rounded-lg bg-white shadow-sm text-sm"
+          >
+            <option value="all">All Genders</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+          </select>
+
           {/* 📂 Category Dropdown */}
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border px-3 py-2 rounded-lg bg-white shadow-sm"
+            className="border px-3 py-2 rounded-lg bg-white shadow-sm text-sm"
           >
-            <option value="all">All</option>
-            <option value="men">Men</option>
-            <option value="women">Women</option>
+            <option value="all">All Categories</option>
             <option value="top wear">Top Wear</option>
             <option value="bottom wear">Bottom Wear</option>
           </select>
