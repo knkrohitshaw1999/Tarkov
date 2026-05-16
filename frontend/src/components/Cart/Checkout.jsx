@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PayPalButton from "./PayPalButton";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -7,11 +7,13 @@ import { createCheckout } from "../../redux/slices/checkoutSlice";
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { cart, loading, error } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const [checkoutId, setCheckoutId] = useState(null);
   const [phoneError, setPhoneError] = useState("");
+  const [useSavedAddress, setUseSavedAddress] = useState(false);
   const [shippingAddress, setShippingAddress] = useState({
     firstName: "",
     lastName: "",
@@ -25,12 +27,33 @@ const Checkout = () => {
   // Auto-capitalize first letter
   const capitalize = (str) =>
     str.charAt(0).toUpperCase() + str.slice(1);
+
+  const checkoutItems = location.state?.checkoutItems || cart?.products || [];
+  const checkoutTotalPrice = location.state?.checkoutItems 
+    ? checkoutItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+    : cart?.totalPrice || 0;
+
   //Ensure cart is loaded before processing
   useEffect(() => {
     if (!cart || !cart.products || cart.products.length === 0) {
       navigate("/");
     }
   }, [cart, navigate]);
+
+  useEffect(() => {
+    if (user?.shippingAddress && user.shippingAddress.address) {
+      setUseSavedAddress(true);
+      setShippingAddress({
+        firstName: user.shippingAddress.firstName || "",
+        lastName: user.shippingAddress.lastName || "",
+        address: user.shippingAddress.address || "",
+        city: user.shippingAddress.city || "",
+        postalCode: user.shippingAddress.postalCode || "",
+        country: user.shippingAddress.country || "",
+        phone: user.shippingAddress.phone || "",
+      });
+    }
+  }, [user]);
 
   const handleCreateCheckout = async (e) => {
     e.preventDefault();
@@ -43,13 +66,13 @@ const Checkout = () => {
     }
     setPhoneError("");
 
-    if (cart && cart.products.length > 0) {
+    if (checkoutItems && checkoutItems.length > 0) {
       const res = await dispatch(
         createCheckout({
-          checkoutItems: cart.products,
+          checkoutItems: checkoutItems,
           shippingAddress,
           paymentMethod: "PayPal",
-          totalPrice: cart.totalPrice,
+          totalPrice: checkoutTotalPrice,
         }),
       );
 
@@ -117,6 +140,57 @@ const Checkout = () => {
               disabled
             />
           </div>
+
+          {user?.shippingAddress && user.shippingAddress.address && (
+            <div className="mb-6">
+              <h3 className="text-lg mb-4">Choose Address</h3>
+              <div className="flex gap-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="addressSelection"
+                    checked={useSavedAddress}
+                    onChange={() => {
+                      setUseSavedAddress(true);
+                      setShippingAddress({
+                        firstName: user.shippingAddress.firstName || "",
+                        lastName: user.shippingAddress.lastName || "",
+                        address: user.shippingAddress.address || "",
+                        city: user.shippingAddress.city || "",
+                        postalCode: user.shippingAddress.postalCode || "",
+                        country: user.shippingAddress.country || "",
+                        phone: user.shippingAddress.phone || "",
+                      });
+                    }}
+                    className="mr-2"
+                  />
+                  Use Saved Address
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="addressSelection"
+                    checked={!useSavedAddress}
+                    onChange={() => {
+                      setUseSavedAddress(false);
+                      setShippingAddress({
+                        firstName: "",
+                        lastName: "",
+                        address: "",
+                        city: "",
+                        postalCode: "",
+                        country: "",
+                        phone: "",
+                      });
+                    }}
+                    className="mr-2"
+                  />
+                  Enter New Address
+                </label>
+              </div>
+            </div>
+          )}
+
           <h3 className="text-lg mb-4"> Delivery</h3>
           <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -292,7 +366,7 @@ const Checkout = () => {
               <div>
                 <h3 className="text-lg mb-4 ">Pay With Paypal</h3>
                 <PayPalButton
-                  amount={cart.totalPrice}
+                  amount={checkoutTotalPrice}
                   onSuccess={handlePaymentSuccess}
                   onError={(err) => alert("Payment Failed. Try Again.")}
                 />
@@ -304,7 +378,7 @@ const Checkout = () => {
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-lg mb-4">Order Summary</h3>
         <div className="border-t py-4 mb-4">
-          {cart.products.map((product, index) => (
+          {checkoutItems.map((product, index) => (
             <div
               key={index}
               className="flex items-start justify-between py-2 border-b"
@@ -327,7 +401,7 @@ const Checkout = () => {
         </div>
         <div className="flex justify-between items-center text-lg mb-4">
           <p>Total</p>
-          <p>₹{cart.totalPrice?.toLocaleString()}</p>
+          <p>₹{checkoutTotalPrice?.toLocaleString()}</p>
         </div>
         <div className="flex justify-between items-center text-lg">
           <p>Shipping</p>
@@ -335,7 +409,7 @@ const Checkout = () => {
         </div>
         <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
           <p>Total</p>
-          <p>₹{cart.totalPrice?.toLocaleString()}</p>
+          <p>₹{checkoutTotalPrice?.toLocaleString()}</p>
         </div>
       </div>
     </div>

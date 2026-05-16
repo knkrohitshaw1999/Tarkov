@@ -8,6 +8,7 @@ import ProductsDetails from "../components/Products/ProductsDetails";
 import ProductGrid from "../components/Products/ProductGrid";
 import FeaturedCollection from "../components/Products/FeaturedCollection";
 import FeaturesSection from "../components/Products/FeaturesSection";
+import DressesToBeNoticed from "../components/Products/DressesToBeNoticed";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByFilters } from "../redux/slices/productsSlice";
@@ -52,6 +53,8 @@ const Home = () => {
       <Hero />
       <GenderCollectionSection />
       <NewArrivals />
+
+      <DressesToBeNoticed />
 
       {/* Best Seller Section */}
       <h2 className="text-3xl text-center font-bold mb-4">

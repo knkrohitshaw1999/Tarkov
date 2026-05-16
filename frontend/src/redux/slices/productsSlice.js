@@ -58,6 +58,26 @@ export const fetchProductDetails = createAsyncThunk(
   },
 );
 
+//Async thunk to fetch recommendations
+export const fetchRecommendations = createAsyncThunk(
+  "products/fetchRecommendations",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/products/recommendations`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || { message: error.message });
+    }
+  }
+);
+
 //Async thunk to update similar products
 
 export const updateProduct = createAsyncThunk(
@@ -81,6 +101,7 @@ const productSlice = createSlice({
     products: [],
     selectedProduct: null, //Store the details of the single Product
     similarProducts: [],
+    recommendations: [],
     loading: false,
     error: null,
     filters: {
@@ -184,6 +205,20 @@ const productSlice = createSlice({
       .addCase(fetchSimilarProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+
+      //handle recommendations
+      .addCase(fetchRecommendations.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRecommendations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recommendations = action.payload;
+      })
+      .addCase(fetchRecommendations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || action.error.message;
       });
   },
 });

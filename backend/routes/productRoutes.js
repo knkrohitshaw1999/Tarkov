@@ -1,5 +1,6 @@
 const express = require("express");
 const Product = require("../models/Product");
+const Order = require("../models/Order");
 const { protect, admin } = require("../middleware/authMiddleware");
 const products = require("../data/products");
 
@@ -292,6 +293,49 @@ router.get("/similar/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("server Error");
+  }
+});
+
+//@route GEt /Api/products/recommendations
+//@desc get personalized recommendations
+// @access Private
+router.get("/recommendations", protect, async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id });
+    if (!orders || orders.length === 0) {
+      return res.json([]);
+    }
+
+    // Extract all product IDs from all orders
+    const purchasedProductIds = [];
+    orders.forEach(order => {
+      order.orderItems.forEach(item => {
+        purchasedProductIds.push(item.productId);
+      });
+    });
+
+    if (purchasedProductIds.length === 0) {
+      return res.json([]);
+    }
+
+    // Find the categories of those purchased products
+    const purchasedProducts = await Product.find({ _id: { $in: purchasedProductIds } });
+    const categories = [...new Set(purchasedProducts.map(p => p.category))];
+
+    if (categories.length === 0) {
+      return res.json([]);
+    }
+
+    // Fetch up to 8 recommended products matching those categories, excluding the exact purchased items
+    const recommendations = await Product.find({
+      category: { $in: categories },
+      _id: { $nin: purchasedProductIds }
+    }).limit(8);
+
+    res.json(recommendations);
+  } catch (error) {
+    console.error("Error in recommendations:", error);
+    res.status(500).send("Server Error");
   }
 });
 

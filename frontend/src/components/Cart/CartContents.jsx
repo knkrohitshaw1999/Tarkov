@@ -6,7 +6,7 @@ import {
   updateCartItemQuantity,
 } from "../../redux/slices/cartSlice";
 
-const CartContents = ({ cart, userId, guestId }) => {
+const CartContents = ({ cart, userId, guestId, selectedItems, onToggleItem }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = (productId, delta, quantity, size, color) => {
@@ -38,6 +38,21 @@ const CartContents = ({ cart, userId, guestId }) => {
             className="flex items-start justify-between py-4 border-b"
           >
             <div className="flex items-start">
+              {cart?.products?.length > 1 && (
+                <input
+                  type="checkbox"
+                  className="mr-3 mt-2 h-5 w-5 cursor-pointer accent-black"
+                  checked={
+                    selectedItems?.some(
+                      (item) =>
+                        item.productId === product.productId &&
+                        item.size === product.size &&
+                        item.color === product.color
+                    ) || false
+                  }
+                  onChange={() => onToggleItem && onToggleItem(product)}
+                />
+              )}
               <img
                 src={product.image}
                 alt={product.name}

@@ -32,16 +32,16 @@ const Register = () => {
       dispatch(mergeCart({ guestId, user }))
         .unwrap()
         .then(() => {
-          navigate(targetPath);
+          navigate(targetPath, { state: location.state });
         })
         .catch((err) => {
           console.error(err);
-          navigate(targetPath);
+          navigate(targetPath, { state: location.state });
         });
     } else {
-      navigate(targetPath);
+      navigate(targetPath, { state: location.state });
     }
-  }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch]);
+  }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch, location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,6 +125,7 @@ const Register = () => {
             Already have an account?{" "}
             <Link
               to={`/login?redirect=${encodeURIComponent(redirect)}`}
+              state={location.state}
               className="text-blue-500 hover:underline"
             >
               Login

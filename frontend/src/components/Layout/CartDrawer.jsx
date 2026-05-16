@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import CartContents from "../Cart/CartContents";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +9,46 @@ const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
   const { user, guestId } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
   const userId = user ? user._id : null;
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleToggleItem = (product) => {
+    const isSelected = selectedItems.some(
+      (item) =>
+        item.productId === product.productId &&
+        item.size === product.size &&
+        item.color === product.color
+    );
+    if (isSelected) {
+      setSelectedItems(
+        selectedItems.filter(
+          (item) =>
+            !(
+              item.productId === product.productId &&
+              item.size === product.size &&
+              item.color === product.color
+            )
+        )
+      );
+    } else {
+      setSelectedItems([...selectedItems, product]);
+    }
+  };
 
   const handleCheckout = () => {
+    let itemsToCheckout = cart?.products || [];
+    if (cart?.products?.length > 1) {
+      if (selectedItems.length === 0) {
+        alert("Please select at least one product to checkout.");
+        return;
+      }
+      itemsToCheckout = selectedItems;
+    }
+
     toggleCartDrawer(); 
     if (!user) {
-      navigate("/login?redirect=checkout");
+      navigate("/login?redirect=checkout", { state: { checkoutItems: itemsToCheckout } });
     } else {
-      navigate("/checkout");
+      navigate("/checkout", { state: { checkoutItems: itemsToCheckout } });
     }
   };
 
@@ -49,7 +82,13 @@ const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
           
           {/* 2. Fixed the Double Rendering Logic */}
           {cart?.products?.length > 0 ? (
-            <CartContents cart={cart} userId={userId} guestId={guestId} />
+            <CartContents 
+              cart={cart} 
+              userId={userId} 
+              guestId={guestId} 
+              selectedItems={selectedItems}
+              onToggleItem={handleToggleItem}
+            />
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
                <p className="text-gray-500">Your cart is empty!</p>

@@ -28,16 +28,16 @@ const Login = () => {
       dispatch(mergeCart({ guestId, user }))
         .unwrap()
         .then(() => {
-          navigate(targetPath);
+          navigate(targetPath, { state: location.state });
         })
         .catch((err) => {
           console.error(err);
-          navigate(targetPath); // Navigate even if merge fails
+          navigate(targetPath, { state: location.state }); // Navigate even if merge fails
         });
     } else {
-      navigate(targetPath);
+      navigate(targetPath, { state: location.state });
     }
-  }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch]);
+  }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch, location.state]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -93,6 +93,7 @@ const Login = () => {
             Don't Have An Account? {""}
             <Link
           to={`/register?redirect=${encodeURIComponent(redirect)}`}
+              state={location.state}
               className="text-blue-500 hover:underline"
             >
               Sign up

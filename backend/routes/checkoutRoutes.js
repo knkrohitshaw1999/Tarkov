@@ -3,6 +3,7 @@ const Cart = require("../models/Cart");
 const Checkout = require("../models/Checkout");
 const Product = require("../models/Product");
 const Order = require("../models/Order");
+const User = require("../models/User");
 const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
@@ -26,6 +27,12 @@ router.post("/", protect, async (req, res) => {
       paymentStatus: "pending",
       isPaid: false,
     });
+    
+    // Update user's shipping address
+    if (shippingAddress) {
+      await User.findByIdAndUpdate(req.user._id, { shippingAddress });
+    }
+
     console.log(`Checkout created for user: ${req.user._id}`);
     res.status(201).json(newcheckout);
   } catch (error) {

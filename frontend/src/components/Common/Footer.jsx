@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoLogoInstagram } from "react-icons/io";
 import { RiTwitterXLine } from "react-icons/ri";
 import { TbBrandMeta } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { FiPhoneCall } from "react-icons/fi";
+import axios from "axios";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+
+    try {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/subscribe`, { email });
+      alert("Thanks for Subscribing us!");
+      setEmail("");
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      alert(error.response?.data?.message || "Could not subscribe. Please try again.");
+    }
+  };
+
   return (
     <footer className="border-t py-12">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4 md:px-8 lg:px-12">
@@ -21,9 +38,11 @@ const Footer = () => {
           </p>
 
           {/* news latter form */}
-          <form className="flex">
+          <form onSubmit={handleSubscribe} className="flex">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter Your Email"
               className="p-3 w-full text-sm border-t border-l 
             border-b border-gray-300 rounded-l-md focus:outline-none

@@ -22,7 +22,7 @@ const AdminHomePage = () => {
   useEffect(() => {
     dispatch(fetchAdminProducts());
     dispatch(fetchAllOrders());
-  },[dispatch]);
+  }, [dispatch]);
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -39,7 +39,7 @@ const AdminHomePage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="p-4 shadow rounded-lg">
             <h2 className="text-xl font-semibold">Revenue</h2>
-            <p className="text-2xl font-bold">₹{totalSales}</p>
+            <p className="text-2xl font-bold">₹{Math.floor(totalSales)}</p>
           </div>
           <div className="p-4 shadow rounded-lg">
             <h2 className="text-xl font-semibold">Total Orders</h2>
@@ -50,7 +50,7 @@ const AdminHomePage = () => {
           </div>
           <div className="p-4 shadow rounded-lg">
             <h2 className="text-xl font-semibold">Total Products</h2>
-          <p className="text-2xl font-bold">{products?.length || 0}</p>
+            <p className="text-2xl font-bold">{products?.length || 0}</p>
             <Link
               to="/admin/products"
               className="text-blue-500 hover:underline"
