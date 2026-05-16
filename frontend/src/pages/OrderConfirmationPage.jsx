@@ -7,7 +7,6 @@ import { clearCart } from "../redux/slices/cartSlice";
 
 const OrderConfirmationPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { checkout } = useSelector((state) => state.checkout);
 
   // Clear the cart when ORDER is confirmed

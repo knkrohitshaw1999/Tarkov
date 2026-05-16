@@ -1,11 +1,10 @@
 import React from 'react'
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const SortOptions = () => {
   const [searchParams, setsearchParams] = useSearchParams();
   const handleSortChange = (e) => {
     const sortBy = e.target.value;
-    const seaechParams =  new URLSearchParams(searchParams);
     searchParams.set("sortBy", sortBy);
     setsearchParams(searchParams)
   }

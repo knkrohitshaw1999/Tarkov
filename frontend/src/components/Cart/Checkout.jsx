@@ -84,7 +84,7 @@ const Checkout = () => {
   };
   const handlePaymentSuccess = async (details) => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/pay`,
         {
           paymentStatus: "paid",
@@ -103,7 +103,7 @@ const Checkout = () => {
   };
   const handleFinalizeCheckout = async (checkoutId) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/finalize`,
         {},
         {
@@ -368,7 +368,7 @@ const Checkout = () => {
                 <PayPalButton
                   amount={checkoutTotalPrice}
                   onSuccess={handlePaymentSuccess}
-                  onError={(err) => alert("Payment Failed. Try Again.")}
+                  onError={() => alert("Payment Failed. Try Again.")}
                 />
               </div>
             )}
