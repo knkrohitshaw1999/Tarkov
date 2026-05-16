@@ -65,7 +65,7 @@ const Navbar = () => {
           {user && user.role === "admin" && (
             <Link
               to="/admin"
-              className="hidden sm:block bg-black px-2 py-1 rounded text-sm text-white"
+              className="bg-black px-2 py-1 rounded text-sm text-white"
             >
               Admin
             </Link>
@@ -161,6 +161,16 @@ const Navbar = () => {
             >
               Bottom Wear
             </Link>
+
+            {user && user.role === "admin" && (
+              <Link
+                to="/admin"
+                onClick={() => setNavDrawerOpen(false)}
+                className="block text-gray-600 hover:text-black"
+              >
+                Admin
+              </Link>
+            )}
           </nav>
         </div>
       </div>

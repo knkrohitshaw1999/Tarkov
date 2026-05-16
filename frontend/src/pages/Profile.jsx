@@ -29,6 +29,14 @@ const Profile = () => {
             <p className="text-lg text-gray-600 mb-4">
               {user?.email}
             </p>
+            {user?.role === "admin" && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-800 mb-2"
+              >
+                Admin Dashboard
+              </button>
+            )}
             <button
               onClick={handleLogout}
               className="w-full bg-red-800 text-white py-2 px-4 rounded hover:bg-red-900"
